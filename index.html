@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="myMoon - Thương hiệu bánh trung thu cao cấp. Mang đến hương vị truyền thống đậm đà kết hợp phong cách hiện đại tinh tế. Hộp quà sang trọng gửi trao thành ý đêm trăng tròn.">
+  <meta name="keywords"
+    content="bánh trung thu, banh trung thu, myMoon, bánh trung thu trứng muối, hộp quà trung thu, bánh trung thu lava, bánh trung thu trà xanh">
+  <meta name="author" content="myMoon">
+
+  <title>myMoon - Trọn Vị Đoàn Viên, Gửi Trao Thành Ý</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/images/icon.png">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css?v=2">
+</head>
+
+<body>
+
+  <!-- --- HEADER & NAVIGATION --- -->
+  <header id="header">
+    <nav class="navbar">
+      <a href="#" class="logo">
+        <img src="assets/images/logo_mymoon.png" alt="myMoon Logo" class="logo-img" id="brand-logo"
+          onerror="this.style.display='none'">
+      </a>
+
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="#hero" class="nav-link">Trang Chủ</a></li>
+        <li><a href="#story" class="nav-link">Câu Chuyện</a></li>
+        <li><a href="#products" class="nav-link">Bánh Trung Thu</a></li>
+        <li><a href="#combos" class="nav-link">Hộp Quà Biếu</a></li>
+        <li><a href="#gallery" class="nav-link">Thư Viện</a></li>
+        <li><a href="#contact" class="nav-link">Đặt Hàng</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="cart-icon-btn" id="cart-toggle-btn" aria-label="Giỏ hàng">
+          <i class="fa-solid fa-shopping-bag"></i>
+          <span class="cart-badge" id="cart-badge-count">0</span>
+        </button>
+
+        <div class="hamburger" id="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- --- HERO SECTION --- -->
+  <section class="hero" id="hero">
+    <div class="hero-container">
+      <div class="hero-content">
+        <p class="hero-subtitle">Mùa trăng đoàn viên 2026</p>
+        <h1 class="hero-title">Trọn Vị Đoàn Viên<br>Gửi Trao Thành Ý</h1>
+        <p class="hero-description">Thương hiệu bánh trung thu myMoon gìn giữ tinh hoa ẩm thực Việt với nguồn nguyên
+          liệu tự nhiên tinh túy, tạo nên những tác phẩm bánh trung thu vừa đậm vị truyền thống vừa mang hơi thở hiện
+          đại.</p>
+        <div class="hero-buttons">
+          <a href="#products" class="btn btn-gold">Mua Bánh Ngay</a>
+          <button id="view-price-btn" class="btn btn-outline">Xem Bảng Giá</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- --- STORY SECTION --- -->
+  <section class="story" id="story">
+    <div class="story-container">
+      <div class="story-image-wrapper">
+        <img src="assets/images/story_reunion.jpg" alt="Đoàn viên ấm áp dưới ánh trăng" class="story-img"
+          loading="lazy">
+      </div>
+      <div class="story-content">
+        <h2>Tết Trung Thu - Tết Của Sự Sum Vầy</h2>
+        <div class="story-divider"></div>
+        <p>Từ bao đời nay, tiếng trống múa lân rộn rã, chiếc đèn lồng ông sao lấp lánh và chiếc bánh nướng, bánh dẻo
+          ngọt bùi đã trở thành những mảnh ký ức không thể thiếu mỗi dịp rằm tháng Tám. Tết Trung Thu không đơn thuần là
+          ngày Tết của trẻ thơ, mà đó là Tết Đoàn Viên - thời khắc quý giá để mọi người tạm gác lại những lo toan, trở
+          về sum họp bên gia đình.</p>
+        <p>Dưới ánh trăng rằm sáng trong, bên chén trà sen ngát hương, việc cùng nhau cắt miếng bánh trung thu ngọt dịu,
+          sẻ chia những câu chuyện thường nhật chính là khoảnh khắc bình yên và hạnh phúc nhất. myMoon ra đời từ ước
+          mong lưu giữ những giá trị thiêng liêng ấy. Mỗi chiếc bánh đều chứa đựng tấm lòng của người nghệ nhân, gửi gắm
+          lời chúc sức khỏe, an khang và tình yêu thương vô hạn.</p>
+        <div class="story-quote">
+          "Trăng có lúc tròn lúc khuyết, nhưng tình thân gia đình luôn đong đầy và vẹn nguyên như ánh trăng đêm rằm."
+        </div>
+        <a href="#products" class="btn btn-primary">Khám Phá Hương Vị</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- --- PRODUCTS SECTION --- -->
+  <section class="products" id="products">
+    <h2 class="section-title">
+      <span>Tuyệt Phẩm Hương Vị</span>
+      Bộ Sưu Tập Bánh Nướng myMoon
+    </h2>
+
+    <div class="filter-container">
+      <button class="filter-btn active" data-category="all">Tất Cả</button>
+      <button class="filter-btn" data-category="traditional">Truyền Thống</button>
+      <button class="filter-btn" data-category="modern">Hiện Đại</button>
+      <button class="filter-btn" data-category="lava">Lava Trứng Chảy</button>
+    </div>
+
+    <div class="products-grid" id="products-grid">
+      <!-- Products will be dynamically loaded here by app.js -->
+    </div>
+  </section>
+
+  <!-- --- GIFT COMBOS SECTION --- -->
+  <section class="combos" id="combos">
+    <h2 class="section-title">
+      <span>Quà Tặng Thượng Hạng</span>
+      Hộp Quà Biếu Cao Cấp
+    </h2>
+
+    <div class="combos-grid" id="combos-grid">
+      <!-- Combos will be dynamically loaded here by app.js -->
+    </div>
+  </section>
+
+  <!-- --- GALLERY SECTION --- -->
+  <section class="gallery" id="gallery">
+    <h2 class="section-title">
+      <span>Hình Ảnh Đậm Nét</span>
+      Góc Nghệ Thuật myMoon
+    </h2>
+
+    <div class="gallery-grid" id="gallery-grid">
+      <!-- Gallery items will be dynamically loaded here by app.js -->
+    </div>
+  </section>
+
+  <!-- --- TESTIMONIALS SECTION --- -->
+  <section class="testimonials" id="testimonials">
+    <h2 class="section-title">
+      <span>Đánh Giá Từ Khách Hàng</span>
+      Khách Hàng Nói Gì Về Chúng Tôi
+    </h2>
+
+    <div class="testimonials-container" id="testimonials-container">
+      <!-- Testimonials loaded here -->
+    </div>
+  </section>
+
+  <!-- --- ORDER & CONTACT SECTION --- -->
+  <section class="contact" id="contact">
+    <h2 class="section-title">
+      <span>Liên Hệ Đặt Hàng</span>
+      Gửi Trao Yêu Thương
+    </h2>
+
+    <div class="contact-container">
+      <!-- Form đặt hàng -->
+      <div class="order-form-wrapper">
+        <h3 style="font-family: var(--font-heading); margin-bottom: 25px; color: var(--primary-color);">Thông Tin Đặt
+          Hàng</h3>
+
+        <form id="order-form">
+          <div class="checkout-summary" id="checkout-summary">
+            <h4 style="margin-bottom: 10px; font-size: 0.95rem; color: var(--primary-color);">Giỏ hàng của bạn</h4>
+            <div id="summary-items-list">
+              <!-- Danh sách sản phẩm mua tạm tính -->
+            </div>
+            <div class="summary-row total">
+              <span>Tổng thanh toán:</span>
+              <span id="summary-total-price">0đ</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="fullname" class="form-label">Họ và tên khách hàng *</label>
+            <input type="text" id="fullname" class="form-control" placeholder="Nhập họ và tên đầy đủ" required>
+          </div>
+
+          <div class="form-group">
+            <label for="phone" class="form-label">Số điện thoại liên hệ *</label>
+            <input type="tel" id="phone" class="form-control" placeholder="Nhập số điện thoại nhận hàng" required>
+          </div>
+
+          <div class="form-group">
+            <label for="address" class="form-label">Địa chỉ nhận hàng *</label>
+            <input type="text" id="address" class="form-control"
+              placeholder="Số nhà, tên đường, phường/xã, quận/huyện..." required>
+          </div>
+
+          <div class="form-group">
+            <label for="note" class="form-label">Ghi chú đơn hàng (Nhân bánh tự chọn, thời gian nhận...)</label>
+            <textarea id="note" class="form-control"
+              placeholder="Ví dụ: Lấy 2 thập cẩm, 2 trứng chảy. Giao vào giờ hành chính..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Phương thức thanh toán</label>
+            <div class="payment-options">
+              <label class="payment-radio">
+                <input type="radio" name="payment_method" value="COD" checked>
+                Thanh toán khi nhận hàng (COD)
+              </label>
+              <label class="payment-radio">
+                <input type="radio" name="payment_method" value="Chuyển khoản">
+                Chuyển khoản ngân hàng
+              </label>
+            </div>
+          </div>
+
+          <div class="form-buttons-group">
+            <button type="submit" class="btn btn-primary" id="submit-cod-btn">Xác Nhận Đặt Hàng</button>
+            <button type="button" class="btn btn-gold" id="submit-zalo-btn">
+              <i class="fa-solid fa-paper-plane" style="margin-right: 5px;"></i> Gửi Qua Zalo
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Thông tin liên hệ -->
+      <div class="contact-info-wrapper">
+        <div class="info-card">
+          <h3>Thông Tin Liên Hệ</h3>
+          <div class="info-list">
+            <div class="info-item">
+              <i class="fa-solid fa-location-dot info-icon"></i>
+              <div class="info-text">
+                <strong>Địa chỉ Showroom:</strong><br>
+                <span id="brand-address">801/2A Phạm Thế Hiển, Phường Chánh Hưng, Quận 8, TP.HCM (Ông Tía Shop)</span>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <i class="fa-solid fa-phone info-icon"></i>
+              <div class="info-text">
+                <strong>Hotline tư vấn:</strong><br>
+                <a href="tel:0344582293" id="brand-hotline"
+                  style="color: var(--primary-color); font-weight: 600;">0344.582.293</a>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <i class="fa-solid fa-envelope info-icon"></i>
+              <div class="info-text">
+                <strong>Email:</strong><br>
+                <a href="mailto:tranbaho@gmail.com" id="brand-email">tranbaho@gmail.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <h3>Chỉ Đường</h3>
+          <div class="map-placeholder">
+            <i class="fa-solid fa-map-location-dot map-icon"></i>
+            <span>Ông Tía Shop - 801/2A Phạm Thế Hiển</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=%C3%94ng+T%C3%ADa+Shop,+801/2A+Ph%E1%BA%A1m+Th%E1%BA%BF+Hi%E1%BB%83n,+Ph%C6%B0%E1%BB%9Dng+Ch%C3%A1nh+H%C6%B0ng,+TP.HCM"
+              target="_blank" class="btn btn-outline"
+              style="margin-top: 10px; font-size: 0.75rem; padding: 8px 15px;">Xem trên Google Maps</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- --- FOOTER --- -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-about">
+        <div class="logo">
+          <img src="assets/images/logo.png" alt="myMoon Logo" class="logo-img" id="footer-logo"
+            onerror="this.style.display='none'">
+          <span class="logo-text">myMoon</span>
+        </div>
+        <p>myMoon tự hào mang đến những hương vị bánh trung thu đỉnh cao, kết hợp hài hòa nguyên liệu truyền thống và
+          phong cách ẩm thực hiện đại. Sản phẩm chất lượng vượt trội, đóng gói sang trọng lịch thiệp.</p>
+        <div class="social-links">
+          <a href="#" class="social-link" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="social-link" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="social-link" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+          <a href="#" class="social-link" aria-label="Youtube"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <h4>Liên Kết Chính</h4>
+        <ul class="footer-menu">
+          <li><a href="#hero">Trang Chủ</a></li>
+          <li><a href="#story">Câu Chuyện Tết Đoàn Viên</a></li>
+          <li><a href="#products">Sản Phẩm Bánh Trung Thu</a></li>
+          <li><a href="#combos">Hộp Quà Biếu Cao Cấp</a></li>
+          <li><a href="#contact">Chính Sách Giao Hàng</a></li>
+          <li><a href="#contact">Điều Khoản Sử Dụng</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-newsletter">
+        <h4>Nhận Tin Khuyến Mãi</h4>
+        <p>Đăng ký nhận thông tin ưu đãi sớm nhất về Bộ sưu tập bánh Trung thu và các combo doanh nghiệp chiết khấu cao.
+        </p>
+        <form class="newsletter-form" id="newsletter-form">
+          <input type="email" class="newsletter-input" placeholder="Địa chỉ email của bạn..." required>
+          <button type="submit" class="newsletter-btn">Đăng ký</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2026 myMoon. Tất cả quyền được bảo lưu. Phát triển bởi Antigravity.</p>
+      <div class="footer-policies">
+        <a href="#" style="margin-right: 15px;">Chính sách bảo mật</a>
+        <a href="#">Quy chế hoạt động</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- --- SHOPPING CART DRAWER --- -->
+  <div class="cart-backdrop" id="cart-backdrop"></div>
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-header">
+      <span class="cart-title"><i class="fa-solid fa-shopping-bag"></i> Giỏ Hàng Của Bạn</span>
+      <button class="cart-close-btn" id="cart-close-btn" aria-label="Đóng giỏ hàng">&times;</button>
+    </div>
+
+    <div class="cart-body" id="cart-items-container">
+      <!-- Items will be dynamically loaded here by app.js -->
+    </div>
+
+    <div class="cart-footer">
+      <div class="cart-total-section">
+        <span>Tổng cộng:</span>
+        <span id="cart-total-price">0đ</span>
+      </div>
+      <a href="#contact" class="btn btn-primary cart-checkout-btn" id="cart-checkout-btn">Tiến Hành Đặt Hàng</a>
+    </div>
+  </div>
+
+  <!-- --- LIGHTBOX POPUP --- -->
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-content">
+      <button class="lightbox-close-btn" id="lightbox-close-btn" aria-label="Đóng"><i
+          class="fa-solid fa-times"></i></button>
+      <div id="lightbox-media-container">
+        <!-- Content will be injected dynamically -->
+      </div>
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+  </div>
+
+  <!-- --- PRICE LIST MODAL --- -->
+  <div class="price-modal" id="price-modal">
+    <div class="price-modal-content">
+      <button class="price-modal-close" id="price-modal-close" aria-label="Đóng"><i
+          class="fa-solid fa-times"></i></button>
+      <div class="price-slider-wrapper">
+        <div class="price-slides">
+          <div class="price-slide active">
+            <img src="assets/images/price_1.jpg" alt="Bảng giá 1 - Bánh nướng Mochi & Bánh dẻo">
+          </div>
+          <div class="price-slide">
+            <img src="assets/images/price_2.jpg" alt="Bảng giá 2 - Nhân bánh">
+          </div>
+          <div class="price-slide">
+            <img src="assets/images/price_3.jpg" alt="Bảng giá 3 - Set Đoàn Viên">
+          </div>
+          <div class="price-slide">
+            <img src="assets/images/price_4.jpg" alt="Bảng giá 4 - Set Sum Vầy">
+          </div>
+        </div>
+        <button class="price-slider-btn prev" id="price-prev-btn"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="price-slider-btn next" id="price-next-btn"><i class="fa-solid fa-chevron-right"></i></button>
+        <div class="price-slider-dots" id="price-dots-container">
+          <div class="price-dot active" data-index="0"></div>
+          <div class="price-dot" data-index="1"></div>
+          <div class="price-dot" data-index="2"></div>
+          <div class="price-dot" data-index="3"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- --- SUCCESS POPUP --- -->
+  <div class="success-popup" id="success-popup">
+    <div class="popup-content">
+      <i class="fa-solid fa-circle-check popup-icon"></i>
+      <h3 class="popup-title">Đặt Hàng Thành Công!</h3>
+      <p class="popup-text">Cảm ơn bạn đã lựa chọn bánh trung thu myMoon. Đơn hàng của bạn đã được ghi nhận. Chúng tôi
+        sẽ nhanh chóng liên hệ với bạn qua điện thoại để xác nhận thông tin giao hàng.</p>
+      <button class="btn btn-primary" id="popup-close-btn">Đóng</button>
+    </div>
+  </div>
+
+  <!-- --- FLOATING WIDGETS --- -->
+  <div class="floating-widgets">
+    <!-- Messenger Button -->
+    <a href="#" target="_blank" class="floating-btn floating-messenger" id="widget-messenger"
+      aria-label="Trò chuyện qua Messenger">
+      <i class="fa-brands fa-facebook-messenger"></i>
+      <span class="floating-tooltip">Chat Messenger</span>
+    </a>
+
+    <!-- Zalo Button -->
+    <a href="#" target="_blank" class="floating-btn floating-zalo" id="widget-zalo" aria-label="Trò chuyện qua Zalo">
+      <span style="font-family: Arial, sans-serif; font-weight: bold; font-size: 1rem;">Zalo</span>
+      <span class="floating-tooltip">Chat Zalo</span>
+    </a>
+
+    <!-- Hotline Call Button -->
+    <a href="tel:0344582293" class="floating-btn floating-hotline" id="widget-hotline" aria-label="Gọi điện hotline">
+      <i class="fa-solid fa-phone"></i>
+      <span class="floating-tooltip">Hotline: 0344.582.293</span>
+    </a>
+  </div>
+
+  <!-- --- JAVASCRIPT LOGIC --- -->
+  <script src="app.js?v=3"></script>
+</body>
+
+</html>

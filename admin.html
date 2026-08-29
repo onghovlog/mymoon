@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>myMoon CMS - Hệ Thống Quản Trị</title>
+  <link rel="icon" type="image/png" href="assets/images/icon.png">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+  <!-- --- LOGIN SCREEN --- -->
+  <div class="login-screen" id="login-screen">
+    <div class="login-box">
+      <div class="login-logo">
+        <img src="assets/images/logo_mymoon.png" class="logo-img" id="admin-login-logo"
+          style="height: 45px; object-fit: contain; margin-right: 10px;" alt="Logo" onerror="this.style.display='none'">
+      </div>
+      <h2>Đăng Nhập Hệ Thống</h2>
+      <form id="login-form">
+        <div class="form-group" style="text-align: left;">
+          <label class="form-label" style="color: #faf6f0; font-size: 0.75rem;">Số điện thoại</label>
+          <input type="text" id="login-username" class="form-control" placeholder="Nhập số điện thoại đăng nhập"
+            required>
+        </div>
+        <div class="form-group" style="text-align: left;">
+          <label class="form-label" style="color: #faf6f0; font-size: 0.75rem;">Mật khẩu</label>
+          <input type="password" id="login-password" class="form-control" placeholder="Nhập mật khẩu" required>
+        </div>
+        <div class="login-error-msg" id="login-error-msg"
+          style="display: none; color: #fc8181; font-size: 0.85rem; margin-bottom: 15px; text-align: left; font-weight: 500;">
+          Số điện thoại hoặc mật khẩu không chính xác!
+        </div>
+        <button type="submit" class="btn btn-login"
+          style="width: 100%; background-color: var(--accent-gold); color: var(--primary-color); font-weight: 700; padding: 12px; margin-top: 10px;">ĐĂNG
+          NHẬP</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="admin-wrapper" style="display: none;">
+    <!-- --- SIDEBAR --- -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <img src="assets/images/logo.png" class="logo-img" id="admin-sidebar-logo"
+          style="height: 35px; object-fit: contain; margin-right: 10px;" alt="Logo" onerror="this.style.display='none'">
+        <span class="logo-text">myMoon Admin</span>
+      </div>
+
+      <ul class="sidebar-menu" style="display: flex; flex-direction: column; height: calc(100% - 70px);">
+        <li class="active" data-target="panel-dashboard">
+          <i class="fa-solid fa-chart-line"></i> Tổng Quan
+        </li>
+        <li data-target="panel-config">
+          <i class="fa-solid fa-gears"></i> Cấu Hình Chung
+        </li>
+        <li data-target="panel-products">
+          <i class="fa-solid fa-cookie"></i> Quản Lý Bánh
+        </li>
+        <li data-target="panel-combos">
+          <i class="fa-solid fa-box-open"></i> Quản Lý Hộp Quà
+        </li>
+        <li data-target="panel-orders">
+          <i class="fa-solid fa-receipt"></i> Đơn Hàng Nhận Được
+          <span class="order-badge" id="pending-orders-badge" style="display: none;">0</span>
+        </li>
+        <li id="btn-logout" style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.05); color: #fc8181;">
+          <i class="fa-solid fa-right-from-bracket"></i> Đăng Xuất
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <a href="/" target="_blank" class="btn btn-outline" style="width: 100%; font-size: 0.8rem; text-align: center;">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Xem Cửa Hàng
+        </a>
+      </div>
+    </aside>
+
+    <!-- --- MAIN CONTENT --- -->
+    <main class="main-content">
+      <!-- Top header -->
+      <header class="top-header">
+        <h1 id="panel-title">Tổng Quan Dashboard</h1>
+        <div class="admin-user">
+          <i class="fa-solid fa-circle-user admin-avatar"></i>
+          <span>Administrator</span>
+        </div>
+      </header>
+
+      <div class="panel-container">
+        <!-- --- PANEL 1: DASHBOARD --- -->
+        <section class="admin-panel active" id="panel-dashboard">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon stat-blue"><i class="fa-solid fa-cookie"></i></div>
+              <div class="stat-details">
+                <span class="stat-title">Tổng Số Loại Bánh</span>
+                <span class="stat-value" id="stat-products-count">0</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon stat-yellow"><i class="fa-solid fa-box-open"></i></div>
+              <div class="stat-details">
+                <span class="stat-title">Số Combo Hộp Quà</span>
+                <span class="stat-value" id="stat-combos-count">0</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon stat-red"><i class="fa-solid fa-receipt"></i></div>
+              <div class="stat-details">
+                <span class="stat-title">Đơn Hàng Nhận Được</span>
+                <span class="stat-value" id="stat-orders-count">0</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon stat-green"><i class="fa-solid fa-sack-dollar"></i></div>
+              <div class="stat-details">
+                <span class="stat-title">Doanh Thu Tạm Tính</span>
+                <span class="stat-value" id="stat-revenue">0đ</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-recent-grid">
+            <div class="recent-card">
+              <h3>Đơn hàng mới nhận</h3>
+              <div class="table-responsive">
+                <table class="table" id="recent-orders-table">
+                  <thead>
+                    <tr>
+                      <th>Mã đơn</th>
+                      <th>Khách hàng</th>
+                      <th>Số điện thoại</th>
+                      <th>Tổng tiền</th>
+                      <th>Trạng thái</th>
+                      <th>Hành động</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Loaded dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- --- PANEL 2: CONFIGURATION --- -->
+        <section class="admin-panel" id="panel-config">
+          <div class="config-card">
+            <h3>Cấu hình thông tin liên hệ và mạng xã hội</h3>
+            <form id="config-form" style="margin-top: 25px;">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">Tên Thương Hiệu</label>
+                  <input type="text" id="cfg-name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Slogan/Tagline</label>
+                  <input type="text" id="cfg-tagline" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Hotline Liên Hệ</label>
+                  <input type="text" id="cfg-hotline" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Email Showroom</label>
+                  <input type="email" id="cfg-email" class="form-control" required>
+                </div>
+                <div class="form-group" style="grid-column: span 2;">
+                  <label class="form-label">Địa Chỉ Showroom</label>
+                  <input type="text" id="cfg-address" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Đường Dẫn Zalo Chat (Link zalo.me)</label>
+                  <input type="url" id="cfg-zalo" class="form-control" placeholder="https://zalo.me/..." required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Đường Dẫn Messenger Chat (Link m.me)</label>
+                  <input type="url" id="cfg-messenger" class="form-control" placeholder="https://m.me/..." required>
+                </div>
+                <div class="form-group" style="grid-column: span 2;">
+                  <label class="form-label">Logo Thương Hiệu (Ảnh có nền trong suốt)</label>
+                  <div class="logo-upload-container"
+                    style="display: flex; align-items: center; gap: 20px; margin-top: 10px;">
+                    <img src="assets/images/logo.png" id="cfg-logo-preview"
+                      style="height: 50px; object-fit: contain; background-color: rgba(31,2,6,0.15); border-radius: 4px; padding: 5px; border: 1px solid var(--border-color);"
+                      alt="Preview" onerror="this.style.display='none'">
+                    <input type="file" id="cfg-logo-file" accept="image/*" class="form-control"
+                      style="flex-grow: 1; padding: 6px;">
+                  </div>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-save" style="margin-top: 30px;">
+                <i class="fa-solid fa-floppy-disk"></i> Lưu Cấu Hình
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <!-- --- PANEL 3: PRODUCTS MANAGEMENT --- -->
+        <section class="admin-panel" id="panel-products">
+          <div class="panel-header-action">
+            <h3>Danh sách Bánh Trung Thu</h3>
+            <button class="btn btn-add" id="btn-add-product">
+              <i class="fa-solid fa-plus"></i> Thêm Bánh Mới
+            </button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table" id="products-table">
+              <thead>
+                <tr>
+                  <th>Hình ảnh</th>
+                  <th>Tên bánh</th>
+                  <th>Phân loại</th>
+                  <th>Nhãn (Tag)</th>
+                  <th>Giá bán</th>
+                  <th>Mô tả ngắn</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- --- PANEL 4: COMBOS MANAGEMENT --- -->
+        <section class="admin-panel" id="panel-combos">
+          <div class="panel-header-action">
+            <h3>Danh sách Hộp Quà Biếu</h3>
+            <button class="btn btn-add" id="btn-add-combo">
+              <i class="fa-solid fa-plus"></i> Thêm Hộp Quà Mới
+            </button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table" id="combos-table">
+              <thead>
+                <tr>
+                  <th>Hình ảnh</th>
+                  <th>Tên hộp quà</th>
+                  <th>Nhãn (Tag)</th>
+                  <th>Giá bán</th>
+                  <th>Mô tả thành phần</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- --- PANEL 5: ORDERS MANAGEMENT --- -->
+        <section class="admin-panel" id="panel-orders">
+          <div class="panel-header-action">
+            <h3>Quản lý Đơn Hàng</h3>
+            <div class="order-filters">
+              <button class="btn btn-filter active" data-status="all">Tất Cả</button>
+              <button class="btn btn-filter" data-status="Đang xử lý">Đang Xử Lý</button>
+              <button class="btn btn-filter" data-status="Đã xác nhận">Đã Xác Nhận</button>
+              <button class="btn btn-filter" data-status="Đã giao">Đã Giao</button>
+              <button class="btn btn-filter" data-status="Đã hủy">Đã Hủy</button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table" id="orders-table">
+              <thead>
+                <tr>
+                  <th>Mã đơn</th>
+                  <th>Thời gian</th>
+                  <th>Khách hàng</th>
+                  <th>Điện thoại</th>
+                  <th>Địa chỉ</th>
+                  <th>Thanh toán</th>
+                  <th>Tổng tiền</th>
+                  <th>Trạng thái</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- --- PRODUCT DIALOG MODAL --- -->
+  <div class="admin-modal" id="product-modal">
+    <div class="admin-modal-content">
+      <button class="admin-modal-close" id="product-modal-close">&times;</button>
+      <h3 id="product-modal-title">Thêm Bánh Trung Thu Mới</h3>
+
+      <form id="product-form" style="margin-top: 20px;">
+        <input type="hidden" id="prod-id">
+        <div class="form-group">
+          <label class="form-label">Tên Bánh *</label>
+          <input type="text" id="prod-name" class="form-control" required>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Phân Loại *</label>
+            <select id="prod-category" class="form-control" required>
+              <option value="traditional">Truyền Thống</option>
+              <option value="modern">Hiện Đại</option>
+              <option value="lava">Lava Trứng Chảy</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Giá Bán (VND) *</label>
+            <input type="number" id="prod-price" class="form-control" required min="0">
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Đường dẫn ảnh *</label>
+            <input type="text" id="prod-image" class="form-control" placeholder="assets/images/..." required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nhãn nổi bật (Tag)</label>
+            <input type="text" id="prod-tag" class="form-control" placeholder="Ví dụ: Bán chạy, Món mới">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mô Tả Nhân Bánh *</label>
+          <textarea id="prod-description" class="form-control" placeholder="Chi tiết về nhân bánh..." required
+            style="min-height: 80px;"></textarea>
+        </div>
+        <button type="submit" class="btn btn-save" style="width: 100%; margin-top: 20px;">Lưu Sản Phẩm</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- --- COMBO DIALOG MODAL --- -->
+  <div class="admin-modal" id="combo-modal">
+    <div class="admin-modal-content">
+      <button class="admin-modal-close" id="combo-modal-close">&times;</button>
+      <h3 id="combo-modal-title">Thêm Hộp Quà Mới</h3>
+
+      <form id="combo-form" style="margin-top: 20px;">
+        <input type="hidden" id="comb-id">
+        <div class="form-group">
+          <label class="form-label">Tên Hộp Quà *</label>
+          <input type="text" id="comb-name" class="form-control" required>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Giá Bán (VND) *</label>
+            <input type="number" id="comb-price" class="form-control" required min="0">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nhãn nổi bật (Tag)</label>
+            <input type="text" id="comb-tag" class="form-control" placeholder="Ví dụ: Premium, Doanh nghiệp">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Đường dẫn ảnh *</label>
+          <input type="text" id="comb-image" class="form-control" placeholder="assets/images/..." required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mô Tả Thành Phần Hộp Quà *</label>
+          <textarea id="comb-description" class="form-control" placeholder="Gồm những bánh gì, trà gì, thiết kế hộp..."
+            required style="min-height: 80px;"></textarea>
+        </div>
+        <button type="submit" class="btn btn-save" style="width: 100%; margin-top: 20px;">Lưu Hộp Quà</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- --- ORDER DETAIL DIALOG MODAL --- -->
+  <div class="admin-modal" id="order-modal">
+    <div class="admin-modal-content" style="max-width: 600px;">
+      <button class="admin-modal-close" id="order-modal-close">&times;</button>
+      <h3>Chi Tiết Đơn Hàng</h3>
+
+      <div id="order-details-content" style="margin-top: 20px;">
+        <!-- Injected dynamically by admin.js -->
+      </div>
+
+      <div style="margin-top: 25px; display: flex; justify-content: flex-end; gap: 10px;">
+        <button class="btn btn-outline" id="btn-close-order-modal">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Javascript CMS -->
+  <script src="admin.js"></script>
+</body>
+
+</html>

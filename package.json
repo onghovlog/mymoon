@@ -1,0 +1,14 @@
+{
+  "name": "mymoon-mooncake",
+  "version": "1.0.0",
+  "description": "myMoon Mooncake Landing Page and CMS API Server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "author": "Antigravity",
+  "license": "ISC"
+}

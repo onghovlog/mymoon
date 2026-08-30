@@ -19,6 +19,7 @@ const recentOrdersTableBody = document.querySelector('#recent-orders-table tbody
 const productsTableBody = document.querySelector('#products-table tbody');
 const combosTableBody = document.querySelector('#combos-table tbody');
 const ordersTableBody = document.querySelector('#orders-table tbody');
+const galleryTableBody = document.querySelector('#gallery-table tbody');
 
 // Config Form
 const configForm = document.getElementById('config-form');
@@ -40,6 +41,12 @@ const orderModal = document.getElementById('order-modal');
 const orderModalClose = document.getElementById('order-modal-close');
 const orderDetailsContent = document.getElementById('order-details-content');
 const btnCloseOrderModal = document.getElementById('btn-close-order-modal');
+
+const galleryModal = document.getElementById('gallery-modal');
+const galleryModalClose = document.getElementById('gallery-modal-close');
+const galleryModalTitle = document.getElementById('gallery-modal-title');
+const galleryForm = document.getElementById('gallery-form');
+const btnAddGallery = document.getElementById('btn-add-gallery');
 
 // --- INIT CMS ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -161,6 +168,7 @@ async function loadData() {
     // Render Managers
     renderProductsTable();
     renderCombosTable();
+    renderGalleryTable();
     renderOrdersTable('all');
     
     // Update Pending Orders Badge
@@ -320,6 +328,42 @@ function renderOrdersTable(statusFilter = 'all') {
       </td>
     `;
     ordersTableBody.appendChild(tr);
+  });
+}
+
+function renderGalleryTable() {
+  if (!galleryTableBody || !dbData) return;
+  galleryTableBody.innerHTML = '';
+  
+  const gallery = dbData.gallery || [];
+  if (gallery.length === 0) {
+    galleryTableBody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Thư viện trống.</td></tr>';
+    return;
+  }
+  
+  gallery.forEach(item => {
+    const tr = document.createElement('tr');
+    let previewHtml = '';
+    if (item.type === 'video') {
+      previewHtml = `<img src="${item.thumbnail || ''}" class="table-img" alt="video thumbnail">`;
+    } else {
+      previewHtml = `<img src="${item.url}" class="table-img" alt="${item.caption}">`;
+    }
+    
+    tr.innerHTML = `
+      <td>${previewHtml}</td>
+      <td><span class="status-badge" style="background-color:#e2e8f0; color:#4a5568;">${item.type === 'video' ? 'Video' : 'Hình ảnh'}</span></td>
+      <td style="max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${item.url}">${item.url}</td>
+      <td style="max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${item.thumbnail || ''}">${item.thumbnail || '-'}</td>
+      <td style="max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${item.caption}">${item.caption}</td>
+      <td>
+        <div class="actions-cell">
+          <button class="btn-action btn-edit" onclick="editGallery('${item.id}')" title="Chỉnh sửa"><i class="fa-solid fa-pencil"></i></button>
+          <button class="btn-action btn-delete" onclick="deleteGallery('${item.id}')" title="Xóa"><i class="fa-solid fa-trash-can"></i></button>
+        </div>
+      </td>
+    `;
+    galleryTableBody.appendChild(tr);
   });
 }
 
@@ -541,6 +585,74 @@ async function submitComboForm(e) {
   }
 }
 
+// --- CRUD GALLERY ---
+window.editGallery = function(id) {
+  const item = dbData.gallery.find(g => g.id === id);
+  if (!item) return;
+  
+  document.getElementById('gal-id').value = item.id;
+  document.getElementById('gal-type').value = item.type;
+  document.getElementById('gal-url').value = item.url;
+  document.getElementById('gal-thumbnail').value = item.thumbnail || '';
+  document.getElementById('gal-caption').value = item.caption;
+  
+  const thumbnailGroup = document.getElementById('gal-thumbnail-group');
+  if (item.type === 'video') {
+    thumbnailGroup.style.display = 'block';
+    document.getElementById('gal-thumbnail').required = true;
+  } else {
+    thumbnailGroup.style.display = 'none';
+    document.getElementById('gal-thumbnail').required = false;
+  }
+  
+  galleryModalTitle.textContent = 'Sửa Thư Viện';
+  galleryModal.classList.add('open');
+};
+
+window.deleteGallery = async function(id) {
+  if (!confirm('Bạn có chắc chắn muốn xóa mục này khỏi thư viện?')) return;
+  
+  dbData.gallery = dbData.gallery.filter(item => item.id !== id);
+  const success = await saveDatabase();
+  if (success) {
+    alert('Đã xóa thành công!');
+    loadData();
+  }
+};
+
+async function submitGalleryForm(e) {
+  e.preventDefault();
+  
+  const id = document.getElementById('gal-id').value;
+  const type = document.getElementById('gal-type').value;
+  const url = document.getElementById('gal-url').value;
+  const thumbnail = document.getElementById('gal-thumbnail').value;
+  const caption = document.getElementById('gal-caption').value;
+  
+  const galleryData = { id, type, url, caption };
+  if (type === 'video') {
+    galleryData.thumbnail = thumbnail;
+  }
+  
+  if (id) {
+    const index = dbData.gallery.findIndex(g => g.id === id);
+    if (index > -1) {
+      dbData.gallery[index] = galleryData;
+    }
+  } else {
+    galleryData.id = 'g-' + Date.now();
+    dbData.gallery.push(galleryData);
+  }
+  
+  const success = await saveDatabase();
+  if (success) {
+    alert('Đã lưu thông tin thư viện thành công!');
+    galleryModal.classList.remove('open');
+    galleryForm.reset();
+    loadData();
+  }
+}
+
 // --- ORDER PERSISTENCE & ACTIONS ---
 window.viewOrderDetails = function(id) {
   const order = orders.find(o => o.id === id);
@@ -661,6 +773,33 @@ function setupEventListeners() {
   comboModalClose.addEventListener('click', () => comboModal.classList.remove('open'));
   comboForm.addEventListener('submit', submitComboForm);
   
+  // Gallery dialog triggers
+  const galTypeSelect = document.getElementById('gal-type');
+  const galThumbnailGroup = document.getElementById('gal-thumbnail-group');
+  const galThumbnailInput = document.getElementById('gal-thumbnail');
+  
+  galTypeSelect.addEventListener('change', (e) => {
+    if (e.target.value === 'video') {
+      galThumbnailGroup.style.display = 'block';
+      galThumbnailInput.required = true;
+    } else {
+      galThumbnailGroup.style.display = 'none';
+      galThumbnailInput.required = false;
+      galThumbnailInput.value = '';
+    }
+  });
+  
+  btnAddGallery.addEventListener('click', () => {
+    document.getElementById('gal-id').value = '';
+    galleryForm.reset();
+    galThumbnailGroup.style.display = 'none';
+    galThumbnailInput.required = false;
+    galleryModalTitle.textContent = 'Thêm Thư Viện Mới';
+    galleryModal.classList.add('open');
+  });
+  galleryModalClose.addEventListener('click', () => galleryModal.classList.remove('open'));
+  galleryForm.addEventListener('submit', submitGalleryForm);
+  
   // Order dialog close
   orderModalClose.addEventListener('click', () => orderModal.classList.remove('open'));
   btnCloseOrderModal.addEventListener('click', () => orderModal.classList.remove('open'));
@@ -670,6 +809,7 @@ function setupEventListeners() {
     if (e.target === productModal) productModal.classList.remove('open');
     if (e.target === comboModal) comboModal.classList.remove('open');
     if (e.target === orderModal) orderModal.classList.remove('open');
+    if (e.target === galleryModal) galleryModal.classList.remove('open');
   });
   
   // Order filter tabs

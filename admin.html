@@ -69,6 +69,9 @@
           <i class="fa-solid fa-receipt"></i> Đơn Hàng Nhận Được
           <span class="order-badge" id="pending-orders-badge" style="display: none;">0</span>
         </li>
+        <li data-target="panel-gallery">
+          <i class="fa-solid fa-images"></i> Quản Lý Thư Viện
+        </li>
         <li id="btn-logout" style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.05); color: #fc8181;">
           <i class="fa-solid fa-right-from-bracket"></i> Đăng Xuất
         </li>
@@ -294,6 +297,34 @@
             </table>
           </div>
         </section>
+
+        <!-- --- PANEL 6: GALLERY MANAGEMENT --- -->
+        <section class="admin-panel" id="panel-gallery">
+          <div class="panel-header-action">
+            <h3>Danh sách Thư Viện Ảnh/Video</h3>
+            <button class="btn btn-add" id="btn-add-gallery">
+              <i class="fa-solid fa-plus"></i> Thêm Thư Viện Mới
+            </button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table" id="gallery-table">
+              <thead>
+                <tr>
+                  <th>Hình ảnh/Xem trước</th>
+                  <th>Loại</th>
+                  <th>Đường dẫn file (URL)</th>
+                  <th>Ảnh đại diện (Thumbnail)</th>
+                  <th>Chú thích (Caption)</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </section>
       </div>
     </main>
   </div>
@@ -393,6 +424,38 @@
       <div style="margin-top: 25px; display: flex; justify-content: flex-end; gap: 10px;">
         <button class="btn btn-outline" id="btn-close-order-modal">Đóng</button>
       </div>
+    </div>
+  </div>
+
+  <!-- --- GALLERY DIALOG MODAL --- -->
+  <div class="admin-modal" id="gallery-modal">
+    <div class="admin-modal-content">
+      <button class="admin-modal-close" id="gallery-modal-close">&times;</button>
+      <h3 id="gallery-modal-title">Thêm Thư Viện Mới</h3>
+
+      <form id="gallery-form" style="margin-top: 20px;">
+        <input type="hidden" id="gal-id">
+        <div class="form-group">
+          <label class="form-label">Loại thư viện *</label>
+          <select id="gal-type" class="form-control" required>
+            <option value="image">Hình ảnh</option>
+            <option value="video">Video (YouTube embed)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Đường dẫn file (URL) *</label>
+          <input type="text" id="gal-url" class="form-control" placeholder="assets/images/... hoặc link YouTube embed" required>
+        </div>
+        <div class="form-group" id="gal-thumbnail-group" style="display: none;">
+          <label class="form-label">Đường dẫn ảnh đại diện (Thumbnail Video) *</label>
+          <input type="text" id="gal-thumbnail" class="form-control" placeholder="assets/images/...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Chú thích (Caption) *</label>
+          <input type="text" id="gal-caption" class="form-control" placeholder="Mô tả cho ảnh/video..." required>
+        </div>
+        <button type="submit" class="btn btn-save" style="width: 100%; margin-top: 20px;">Lưu Thư Viện</button>
+      </form>
     </div>
   </div>
 

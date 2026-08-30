@@ -1,76 +1,80 @@
+require('dotenv').config();
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const { Config, Order } = require('./db');
 
 const app = express();
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 
 app.use(express.json());
 app.use(express.static(__dirname));
 
-const DB_FILE = path.join(__dirname, 'db.json');
-const ORDERS_FILE = path.join(__dirname, 'orders.json');
-
-// Helper to read JSON files safely
-function readJsonFile(filePath, defaultData = {}) {
-  try {
-    if (!fs.existsSync(filePath)) {
-      fs.writeFileSync(filePath, JSON.stringify(defaultData, null, 2));
-      return defaultData;
-    }
-    const content = fs.readFileSync(filePath, 'utf-8');
-    return JSON.parse(content);
-  } catch (error) {
-    console.error(`Error reading file ${filePath}:`, error);
-    return defaultData;
-  }
-}
-
-// Helper to write JSON files safely
-function writeJsonFile(filePath, data) {
-  try {
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
-    return true;
-  } catch (error) {
-    console.error(`Error writing file ${filePath}:`, error);
-    return false;
-  }
-}
-
 // --- DATABASE API ---
-app.get('/api/db', (req, res) => {
-  const dbData = readJsonFile(DB_FILE, {});
-  res.json(dbData);
+app.get('/api/db', async (req, res) => {
+  try {
+    let config = await Config.findOne();
+    if (!config) {
+      config = await Config.create({});
+    }
+    res.json(config);
+  } catch (error) {
+    console.error('Error fetching config:', error);
+    res.status(500).json({ error: 'Lỗi máy chủ khi lấy cấu hình.' });
+  }
 });
 
-app.post('/api/save-db', (req, res) => {
+app.post('/api/save-db', async (req, res) => {
   const newDbData = req.body;
   if (!newDbData || typeof newDbData !== 'object') {
     return res.status(400).json({ error: 'Dữ liệu không hợp lệ.' });
   }
   
-  const success = writeJsonFile(DB_FILE, newDbData);
-  if (success) {
+  try {
+    let config = await Config.findOne();
+    if (!config) {
+      config = new Config(newDbData);
+    } else {
+      config.brand = newDbData.brand || {};
+      config.admin = newDbData.admin || {};
+      config.products = newDbData.products || [];
+      config.combos = newDbData.combos || [];
+      config.gallery = newDbData.gallery || [];
+      config.testimonials = newDbData.testimonials || [];
+      config.markModified('brand');
+      config.markModified('admin');
+      config.markModified('products');
+      config.markModified('combos');
+      config.markModified('gallery');
+      config.markModified('testimonials');
+    }
+    await config.save();
     res.json({ message: 'Lưu cơ sở dữ liệu thành công!' });
-  } else {
-    res.status(500).json({ error: 'Không thể ghi tệp cơ sở dữ liệu.' });
+  } catch (error) {
+    console.error('Error saving config:', error);
+    res.status(500).json({ error: 'Không thể ghi cơ sở dữ liệu MongoDB.' });
   }
 });
 
 // --- AUTHENTICATION API ---
-app.post('/api/login', (req, res) => {
+app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password) {
     return res.status(400).json({ error: 'Vui lòng cung cấp số điện thoại và mật khẩu.' });
   }
   
-  const dbData = readJsonFile(DB_FILE, {});
-  const adminConfig = dbData.admin || { username: "0344582293", password: "123" };
-  
-  if (username === adminConfig.username && password === adminConfig.password) {
-    res.json({ success: true, message: 'Đăng nhập thành công!' });
-  } else {
-    res.status(401).json({ error: 'Số điện thoại hoặc mật khẩu không chính xác.' });
+  try {
+    const config = await Config.findOne();
+    const adminConfig = (config && config.admin) ? config.admin : { username: "0344582293", password: "123" };
+    
+    if (username === adminConfig.username && password === adminConfig.password) {
+      res.json({ success: true, message: 'Đăng nhập thành công!' });
+    } else {
+      res.status(401).json({ error: 'Số điện thoại hoặc mật khẩu không chính xác.' });
+    }
+  } catch (error) {
+    console.error('Error logging in:', error);
+    res.status(500).json({ error: 'Lỗi hệ thống khi đăng nhập.' });
   }
 });
 
@@ -100,35 +104,37 @@ app.post('/api/upload-logo', (req, res) => {
 });
 
 // --- ORDERS API ---
-app.get('/api/orders', (req, res) => {
-  const orders = readJsonFile(ORDERS_FILE, []);
-  res.json(orders);
+app.get('/api/orders', async (req, res) => {
+  try {
+    const orders = await Order.find().sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    res.status(500).json({ error: 'Lỗi máy chủ khi lấy danh sách đơn hàng.' });
+  }
 });
 
-app.post('/api/orders', (req, res) => {
-  const order = req.body;
-  if (!order || !order.fullname || !order.phone) {
+app.post('/api/orders', async (req, res) => {
+  const orderData = req.body;
+  if (!orderData || !orderData.fullname || !orderData.phone) {
     return res.status(400).json({ error: 'Thông tin đơn hàng không đầy đủ.' });
   }
   
-  const orders = readJsonFile(ORDERS_FILE, []);
-  
-  // Set meta details
-  order.id = 'ord-' + Date.now();
-  order.createdAt = new Date().toISOString();
-  order.status = 'Đang xử lý'; // Default status
-  
-  orders.unshift(order); // Add to the beginning of the list
-  
-  const success = writeJsonFile(ORDERS_FILE, orders);
-  if (success) {
-    res.status(201).json({ message: 'Đặt hàng thành công!', order });
-  } else {
+  try {
+    // Set meta details
+    orderData.id = 'ord-' + Date.now();
+    orderData.createdAt = new Date().toISOString();
+    orderData.status = 'Đang xử lý'; // Default status
+    
+    const newOrder = await Order.create(orderData);
+    res.status(201).json({ message: 'Đặt hàng thành công!', order: newOrder });
+  } catch (error) {
+    console.error('Error saving order:', error);
     res.status(500).json({ error: 'Không thể lưu thông tin đơn hàng.' });
   }
 });
 
-app.put('/api/orders/:id', (req, res) => {
+app.put('/api/orders/:id', async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
   
@@ -136,19 +142,20 @@ app.put('/api/orders/:id', (req, res) => {
     return res.status(400).json({ error: 'Trạng thái không hợp lệ.' });
   }
   
-  const orders = readJsonFile(ORDERS_FILE, []);
-  const orderIndex = orders.findIndex(o => o.id === id);
-  
-  if (orderIndex === -1) {
-    return res.status(404).json({ error: 'Không tìm thấy đơn hàng.' });
-  }
-  
-  orders[orderIndex].status = status;
-  
-  const success = writeJsonFile(ORDERS_FILE, orders);
-  if (success) {
-    res.json({ message: 'Cập nhật trạng thái đơn hàng thành công!', order: orders[orderIndex] });
-  } else {
+  try {
+    const updatedOrder = await Order.findOneAndUpdate(
+      { id: id },
+      { status: status },
+      { new: true }
+    );
+    
+    if (!updatedOrder) {
+      return res.status(404).json({ error: 'Không tìm thấy đơn hàng.' });
+    }
+    
+    res.json({ message: 'Cập nhật trạng thái đơn hàng thành công!', order: updatedOrder });
+  } catch (error) {
+    console.error('Error updating order:', error);
     res.status(500).json({ error: 'Không thể cập nhật trạng thái đơn hàng.' });
   }
 });
@@ -161,3 +168,4 @@ app.use((req, res) => {
 app.listen(PORT, () => {
   console.log(`myMoon Server is running on http://localhost:${PORT}`);
 });
+

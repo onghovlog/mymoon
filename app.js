@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // --- FETCH DATABASE ---
 async function fetchDatabase() {
   try {
-    const response = await fetch('db.json');
+    const response = await fetch('/api/db');
     if (!response.ok) {
       throw new Error('Không thể tải cơ sở dữ liệu.');
     }

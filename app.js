@@ -640,19 +640,55 @@ function sendOrderToZalo() {
 }
 
 // --- LIGHTBOX MODAL LOGIC ---
+function getYoutubeEmbedUrl(url) {
+  if (!url) return '';
+  if (url.includes('/embed/')) return url;
+  
+  let videoId = '';
+  if (url.includes('/shorts/')) {
+    const parts = url.split('/shorts/');
+    if (parts[1]) videoId = parts[1].split(/[?#]/)[0];
+  } else if (url.includes('watch?v=')) {
+    const parts = url.split('watch?v=');
+    if (parts[1]) videoId = parts[1].split(/[&?#]/)[0];
+  } else if (url.includes('youtu.be/')) {
+    const parts = url.split('youtu.be/');
+    if (parts[1]) videoId = parts[1].split(/[?#]/)[0];
+  }
+  
+  if (videoId) {
+    return `https://www.youtube.com/embed/${videoId}`;
+  }
+  return url;
+}
+
 function openLightbox(item) {
   if (!lightboxMediaContainer) return;
   lightboxMediaContainer.innerHTML = '';
 
+  const lightboxContent = document.querySelector('.lightbox-content');
+
   if (item.type === 'video') {
     // Generate iframe for YouTube video
     const iframe = document.createElement('iframe');
-    iframe.src = `${item.url}?autoplay=1`;
+    const embedUrl = getYoutubeEmbedUrl(item.url);
+    iframe.src = `${embedUrl}?autoplay=1`;
     iframe.className = 'lightbox-iframe';
     iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
     iframe.allowFullscreen = true;
+    
+    // Check if it's a YouTube Short
+    const isShort = item.url.includes('/shorts/');
+    if (isShort) {
+      iframe.classList.add('lightbox-short');
+      if (lightboxContent) lightboxContent.classList.add('is-short');
+    } else {
+      if (lightboxContent) lightboxContent.classList.remove('is-short');
+    }
+
     lightboxMediaContainer.appendChild(iframe);
   } else {
+    if (lightboxContent) lightboxContent.classList.remove('is-short');
     // Generate image
     const img = document.createElement('img');
     img.src = item.url;
@@ -667,6 +703,9 @@ function openLightbox(item) {
 
 function closeLightbox() {
   lightbox.classList.remove('open');
+  const lightboxContent = document.querySelector('.lightbox-content');
+  if (lightboxContent) lightboxContent.classList.remove('is-short');
+  
   // Clear container to stop videos or audio playing in background when closed
   setTimeout(() => {
     if (lightboxMediaContainer) {

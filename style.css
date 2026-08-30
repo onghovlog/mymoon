@@ -1381,6 +1381,18 @@ footer {
   max-width: 100%;
 }
 
+.lightbox-iframe.lightbox-short {
+  width: 360px;
+  height: 640px;
+  max-width: 100%;
+  max-height: 80vh;
+  aspect-ratio: 9 / 16;
+}
+
+.lightbox-content.is-short {
+  max-width: 360px;
+}
+
 .lightbox-caption {
   color: var(--text-light);
   text-align: center;
@@ -1588,6 +1600,14 @@ footer {
   }
   .lightbox-iframe {
     height: 250px;
+  }
+  .lightbox-iframe.lightbox-short {
+    width: 280px;
+    height: 497px;
+    max-height: 70vh;
+  }
+  .lightbox-content.is-short {
+    max-width: 280px;
   }
   .form-buttons-group {
     grid-template-columns: 1fr;
